@@ -1,0 +1,16 @@
+server:
+  port: 8080
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+
+      #comprimir a resposta nesses content types que ultrapassarem esse tamanho configurado,
+    #vai usar gzip o que torna a resposta mais rapida. Com isso melhoramosa performance
+  undertow:
+    threads:
+      worker: 64
+      io: 4
+      #io  - threads que irao escutar as novas conexoes e jogar em uma fila- ideial uma thread/cpu
+      #worker - quem consome as mensagens da fila
+      #uma thread no java ocupa de 2 a 3 MB
