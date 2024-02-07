@@ -35,7 +35,7 @@ public class GeradorNotaFiscalServiceImpl implements GeradorNotaFiscalService {
         this.itensNotafiscal = calculadoraAliquotaProdutoService.calcularAliquota(pedido.getItens(), aliquota);
         final var valorFreteComPercentual = this.frete.calcularFrete(destinatario, pedido);
         final var notaFiscal = NotaFiscal.factory(pedido.getValorTotalItens(), valorFreteComPercentual, itensNotafiscal, pedido);
-
+        notaFiscal.validarNota();
         this.estoqueService.enviarNotaFiscalParaBaixaEstoque(notaFiscal);
         this.registroService.registrarNotaFiscal(notaFiscal);
         this.entregaService.agendarEntrega(notaFiscal);

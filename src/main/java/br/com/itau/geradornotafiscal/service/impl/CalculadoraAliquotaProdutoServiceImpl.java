@@ -10,11 +10,9 @@ import java.util.List;
 
 @Service
 public class CalculadoraAliquotaProdutoServiceImpl implements CalculadoraAliquotaProdutoService {
-    private static List<ItemNotaFiscal> itemNotaFiscalList = new ArrayList<>();
-
     @Override
-    public List<ItemNotaFiscal> calcularAliquota(List<Item> items, double aliquotaPercentual) {
-
+    public List<ItemNotaFiscal> calcularAliquota(final List<Item> items, final double aliquotaPercentual) {
+        final var itensNotaFiscal = new ArrayList<ItemNotaFiscal>();
         for (Item item : items) {
             double valorTributo = item.getValorUnitario() * aliquotaPercentual;
             ItemNotaFiscal itemNotaFiscal = ItemNotaFiscal.builder()
@@ -24,9 +22,9 @@ public class CalculadoraAliquotaProdutoServiceImpl implements CalculadoraAliquot
                     .quantidade(item.getQuantidade())
                     .valorTributoItem(valorTributo)
                     .build();
-            itemNotaFiscalList.add(itemNotaFiscal);
+            itensNotaFiscal.add(itemNotaFiscal);
         }
-        return itemNotaFiscalList;
+        return itensNotaFiscal;
     }
 }
 

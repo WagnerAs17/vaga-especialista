@@ -24,4 +24,8 @@ public class ItemNotaFiscal {
     @JsonProperty("valor_tributo_item")
     private double valorTributoItem;
 
+    public double somarValorItem(){
+        return valorUnitario * quantidade;
+    }
+
 }

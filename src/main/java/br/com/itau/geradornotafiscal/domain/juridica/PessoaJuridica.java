@@ -1,6 +1,7 @@
 package br.com.itau.geradornotafiscal.domain.juridica;
 
 import br.com.itau.geradornotafiscal.domain.Pessoa;
+import br.com.itau.geradornotafiscal.domain.exceptions.RegimeTributacaoInvalidoException;
 import br.com.itau.geradornotafiscal.domain.juridica.tributacao.RegimeTributacao;
 import br.com.itau.geradornotafiscal.model.Pedido;
 import br.com.itau.geradornotafiscal.model.RegimeTributacaoPJ;
@@ -26,6 +27,8 @@ public class PessoaJuridica implements Pessoa {
         final var valorTotalItens = pedido.getValorTotalItens();
         final var regimeTributacao = pedido.getDestinatario().getRegimeTributacao();
         final var tributacao = this.regimeTributacoes.getOrDefault(regimeTributacao, null);
-        return Objects.nonNull(tributacao) ? tributacao.getAliquota(valorTotalItens) : 0.0;
+        if(Objects.nonNull(tributacao))
+            return tributacao.getAliquota(valorTotalItens);
+        throw new RegimeTributacaoInvalidoException("Regime de tribucao informado nao eh valido");
     }
 }

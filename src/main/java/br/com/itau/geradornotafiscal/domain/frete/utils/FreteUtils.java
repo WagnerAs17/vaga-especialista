@@ -1,10 +1,12 @@
 package br.com.itau.geradornotafiscal.domain.frete.utils;
 
+import br.com.itau.geradornotafiscal.domain.exceptions.RegiaoInformadaInvalidaException;
 import br.com.itau.geradornotafiscal.model.Destinatario;
 import br.com.itau.geradornotafiscal.model.Endereco;
 import br.com.itau.geradornotafiscal.model.Finalidade;
 import br.com.itau.geradornotafiscal.model.Regiao;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class FreteUtils {
@@ -13,14 +15,14 @@ public class FreteUtils {
 
     public static Regiao getRegionPorEntregaEFidelidade(Destinatario destinatario){
         return destinatario.getEnderecos().stream()
-                .filter(filterEndereco())
+                .filter(end -> filterEndereco(end) && Objects.nonNull(end.getRegiao()))
                 .map(Endereco::getRegiao)
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new RegiaoInformadaInvalidaException("Regiao invalida"));
     }
 
-    private static Predicate<Endereco> filterEndereco() {
-        return endereco -> finalidadeIsEntrega(endereco) ||
+    private static boolean filterEndereco(Endereco endereco) {
+        return finalidadeIsEntrega(endereco) ||
                 finalidadeIsCobranca(endereco);
     }
 

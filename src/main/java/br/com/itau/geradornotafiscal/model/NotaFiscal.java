@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import br.com.itau.geradornotafiscal.domain.exceptions.NotaFiscalException;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -44,6 +45,26 @@ public class NotaFiscal {
                 .itens(itensNotafical)
                 .destinatario(pedido.getDestinatario())
                 .build();
+    }
+
+    public void validarNota(){
+        if(valorTotalNotaEIgualTotalItensInformado())
+            return;
+
+        throw new NotaFiscalException("valor total dos itens nao bate com o informado");
+    }
+
+    private double somarTodosItensNotaFiscal(){
+        var valorTotalNotal = 0.0;
+        for (final var itemNotalFical: this.itens) {
+            valorTotalNotal += itemNotalFical.somarValorItem();
+        }
+
+        return valorTotalNotal;
+    }
+
+    private boolean valorTotalNotaEIgualTotalItensInformado(){
+        return valorTotalItens == this.somarTodosItensNotaFiscal();
     }
 
 }
