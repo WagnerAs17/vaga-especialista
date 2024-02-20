@@ -14,3 +14,8 @@ server:
       #io  - threads que irao escutar as novas conexoes e jogar em uma fila- ideial uma thread/cpu
       #worker - quem consome as mensagens da fila
       #uma thread no java ocupa de 2 a 3 MB
+management:
+  endpoints:
+    web:
+      exposure:
+        include: [ "prometheus" ]
